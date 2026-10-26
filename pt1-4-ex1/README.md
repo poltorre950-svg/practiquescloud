@@ -2,15 +2,14 @@
 
 ## Descripción general
 
-Este ejercicio introduce el uso básico de Terraform como infraestructura como código (IaC) sobre AWS. El objetivo es declarar y desplegar **dos instancias EC2** de tipo `t3.micro` con **Amazon Linux 2023** en la región **`us-east-1`**.
+Este ejercicio introduce el uso básico de Terraform como infraestructura como código (IaC) sobre AWS. El objetivo es declarar y desplegar **dos instancias EC2** de tipo `t3.micro` con **Amazon Linux 2023** en la región **`us-east-1`**, utilizando la AMI gratuita `ami-04b938437b69a2c9c`.
 
 La configuración:
 
 - Define el proveedor de AWS y fija la región `us-east-1`.
-- Obtiene dinámicamente la AMI oficial más reciente de Amazon Linux 2023 mediante un `data source` de Terraform.
+- Utiliza directamente la AMI gratuita `ami-04b938437b69a2c9c`.
 - Crea dos instancias EC2 utilizando el meta-argumento `count`.
-- Asigna etiquetas (`tags`) comunes y un nombre dinámico a cada instancia: `Instancia-1` e `Instancia-2`.
-- Expone como salida los IDs y las IP públicas de las instancias creadas.
+- Asigna un nombre dinámico a cada instancia mediante `tags`: `Instancia-1` e `Instancia-2`.
 
 ## Estructura del proyecto
 
@@ -34,15 +33,13 @@ El despliegue se realiza en la VPC por defecto de la región `us-east-1`. Terraf
 
 | Recurso | Nombre | Descripción |
 | --- | --- | --- |
-| `terraform` | — | Versión mínima de Terraform y proveedor de AWS. |
 | `provider` | `aws` | Proveedor de AWS configurado en `us-east-1`. |
-| `data.aws_ami` | `amazon_linux_2023` | AMI oficial más reciente de Amazon Linux 2023 (`x86_64`). |
-| `aws_instance` | `web` | Dos instancias EC2 `t3.micro` creadas con `count = 2`. |
+| `aws_instance` | `web` | Dos instancias EC2 `t3.micro` creadas con `count = 2` y la AMI gratuita `ami-04b938437b69a2c9c`. |
 
 ## Requisitos previos
 
-- [Terraform](https://developer.hashicorp.com/terraform/install) instalado (versión `1.5.0` o superior).
-- Una cuenta de AWS con permisos para crear instancias EC2, consultar AMIs y leer la VPC por defecto.
+- [Terraform](https://developer.hashicorp.com/terraform/install) instalado.
+- Una cuenta de AWS con permisos para crear instancias EC2 y leer la VPC por defecto.
 - Credenciales de AWS configuradas en el entorno. Por ejemplo, mediante el AWS CLI:
 
   ```bash
@@ -70,12 +67,9 @@ El despliegue se realiza en la VPC por defecto de la región `us-east-1`. Terraf
 
 2. **Revisar la configuración de `main.tf`.**
 
-   - El bloque `terraform` fija la versión mínima de Terraform y la versión del proveedor `hashicorp/aws`.
    - El bloque `provider "aws"` establece la región `us-east-1`.
-   - El `data "aws_ami" "amazon_linux_2023"` busca la AMI más reciente de Amazon Linux 2023 con arquitectura `x86_64`, virtualización `hvm` y disco raíz EBS.
-   - El recurso `aws_instance.web` usa `count = 2` para crear dos instancias idénticas.
+   - El recurso `aws_instance.web` utiliza la AMI gratuita `ami-04b938437b69a2c9c` y crea dos instancias idénticas de tipo `t3.micro` mediante `count = 2`.
    - La etiqueta `Name` se construye con `Instancia-${count.index + 1}`, generando `Instancia-1` e `Instancia-2`.
-   - Los bloques `output` muestran los IDs y las IP públicas al finalizar el despliegue.
 
 3. **Inicializar el proyecto de Terraform.**
 
@@ -100,17 +94,12 @@ El despliegue se realiza en la VPC por defecto de la región `us-east-1`. Terraf
    terraform apply
    ```
 
-   Terraform solicitará confirmación. Se puede escribir `yes` o ejecutar directamente `terraform apply -auto-approve` en un entorno de prácticas. Al finalizar se muestran los outputs con los IDs y las IP públicas.
+   Terraform solicitará confirmación. Se puede escribir `yes` o ejecutar directamente `terraform apply -auto-approve` en un entorno de prácticas. Al finalizar se habrán creado las dos instancias EC2.
 
 6. **Verificar el resultado.**
 
    - Consultar las instancias en la consola de AWS, en **EC2 → Instances**, región **Noreste de EE. UU. (N. Virginia) `us-east-1`**.
    - Comprobar que existen dos instancias `t3.micro` con las etiquetas `Name = Instancia-1` e `Name = Instancia-2`.
-   - Opcionalmente, consultar los outputs:
-
-     ```bash
-     terraform output
-     ```
 
 7. **Destruir la infraestructura.**
 
@@ -130,7 +119,7 @@ Los comandos deben ejecutarse **en este orden** desde el directorio `pt1-4-ex1/`
 terraform init
 ```
 
-Inicializa el directorio de trabajo. Descarga el proveedor de AWS declarado en `required_providers`, prepara el backend local y crea el archivo de bloqueo de dependencias. Es el primer comando que se ejecuta en un proyecto de Terraform.
+Inicializa el directorio de trabajo. Descarga el proveedor de AWS necesario, prepara el backend local y crea el archivo de bloqueo de dependencias. Es el primer comando que se ejecuta en un proyecto de Terraform.
 
 ### 2. `terraform plan`
 
@@ -146,7 +135,7 @@ Genera un plan de ejecución y muestra los cambios que Terraform aplicaría para
 terraform apply
 ```
 
-Aplica el plan aprobado y crea los recursos en AWS. Terraform pide confirmación interactiva antes de continuar. Al finalizar, guarda el estado en `terraform.tfstate` y muestra los valores definidos en los bloques `output`.
+Aplica el plan aprobado y crea los recursos en AWS. Terraform pide confirmación interactiva antes de continuar. Al finalizar, guarda el estado en `terraform.tfstate`.
 
 ### 4. `terraform destroy`
 
