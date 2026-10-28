@@ -1,0 +1,35 @@
+# Terraform: estado, planes y providers descargados (no se versionan)
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+crash.log
+crash.*.log
+*.tfplan
+tfplan
+
+# Posibles secretos
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+*.pem
+*.key
+*.p12
+.env
+.env.*
+
+# Ficheros de override
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# IDEs y sistema operativo
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
