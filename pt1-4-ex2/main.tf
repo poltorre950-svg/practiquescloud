@@ -2,21 +2,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-data "aws_ami" "amazon_linux_2023" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["al2023-ami-2023.*-x86_64"]
-  }
-
-  filter {
-    name   = "architecture"
-    values = ["x86_64"]
-  }
-}
-
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
 }
@@ -61,7 +46,7 @@ resource "aws_instance" "web" {
     "instancia-6" = aws_subnet.c
   }
 
-  ami           = data.aws_ami.amazon_linux_2023.id
+  ami           = "ami-04b938437b69a2c9c" # Amazon Linux 2023 (us-east-1)
   instance_type = "t3.micro"
   subnet_id     = each.value.id
 
