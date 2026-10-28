@@ -32,10 +32,6 @@ Topología general:
 
 ![Topología](assets/topologia.png)
 
-VPC y subredes:
-
-![VPC y Subredes](assets/vpc_subnets.png)
-
 Instancias EC2:
 
 ![Instancias EC2](assets/ec2_instances.png)
@@ -62,7 +58,6 @@ Instancias EC2:
 pt1-4-ex2/
 ├── assets/
 │   ├── topologia.png
-│   ├── vpc_subnets.png
 │   └── ec2_instances.png
 ├── main.tf                 # VPC, subredes e instancias
 ├── README.md
