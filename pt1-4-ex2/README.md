@@ -43,7 +43,7 @@ Instancias EC2:
 ## Recursos desplegados
 
 - 1 VPC `10.0.0.0/16`.
-- 3 subredes en `us-east-1a` con los CIDR indicados.
+- 3 subredes en `us-east-1a` con los CIDR indicados y etiqueta `Name` (`subred-a`, `subred-b`, `subred-c`) para identificarlas en la consola.
 - 6 instancias EC2 `t3.micro` (2 por subred): `instancia-1` a `instancia-6`.
 - 1 AMI de Amazon Linux 2023 obtenida dinámicamente con un *data source* (la más reciente de la cuenta `amazon`).
 
@@ -105,8 +105,12 @@ resource "aws_subnet" "a" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.32.0/25"
   availability_zone = "us-east-1a"
+
+  tags = {
+    Name = "subred-a"
+  }
 }
-# ... subnets "b" (10.0.30.0/23) y "c" (10.0.33.0/28)
+# ... subnets "b" (10.0.30.0/23, Name = "subred-b") y "c" (10.0.33.0/28, Name = "subred-c")
 ```
 
 ### Instancias con `for_each`
