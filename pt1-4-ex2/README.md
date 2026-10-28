@@ -16,6 +16,8 @@ Los tres rangos no se solapan y las subredes llevan etiqueta `Name` para identif
 
 ![Instancias EC2](assets/ec2_instances.png)
 
+![Subnets VPC](assets/vpc_subnets.png)
+
 ## Recursos
 
 - 1 VPC (`aws_vpc.main`).
