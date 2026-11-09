@@ -43,19 +43,6 @@ Destrucción:
 terraform destroy
 ```
 
-## Capturas de pantalla
-
-Incluir en `assets/`:
-
-1. `terraform-init.png`
-2. `terraform-plan.png`
-3. `terraform-apply.png`
-4. `vpc.png`
-5. `subnets.png`
-6. `routes.png`
-7. `security-group.png`
-8. `ec2-instances.png`
-
 ## Requisitos previos
 
 - Terraform instalado
